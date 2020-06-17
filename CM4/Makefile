@@ -27,12 +27,18 @@ all: $(SUB_DIR)
     done
 	@# $(MAKE) info
 	@$(MAKE) $(patsubst %.c, %.o, $(wildcard *.c))
+	@$(MAKE) $(patsubst %.s, %.o, $(wildcard *.s))
 	@echo Leave $(CURR_DIR)
 
 %.o: %.c
-	@echo Compile C File $< ...
+	@echo 编译 C 文件 $< ...
 	@$(CC) $(CFLAGS_FREERTOS_$(MCU)) $< -o $@
-	@echo Compile Complete
+	@echo 编译完成
+
+%.o: %.s
+	@echo 编译 .s 文件 $< ...
+	@$(CC) $(CFLAGS_FREERTOS_$(MCU)) $< -o $@
+	@echo 编译完成
 
 .PHONY: clean
 clean:
