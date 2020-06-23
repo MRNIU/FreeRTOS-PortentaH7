@@ -25,7 +25,7 @@
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */     
+/* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
@@ -58,7 +58,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-   
+
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -72,7 +72,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-       
+
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -104,24 +104,35 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
   * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used 
+  * @param  argument: Not used
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+  // GPIO_InitTypeDef GPIO_InitStructure;
+  //
+  // __HAL_RCC_GPIOK_CLK_ENABLE();
+  //
+  // GPIO_InitStructure.Pin = GPIO_PIN_6;
+  // GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+  // GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  // HAL_GPIO_Init( GPIOK, &GPIO_InitStructure );
+  // /* Infinite loop */
+  // for(;;)
+  // {
+  //   HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, 1);
+  //   osDelay(500);
+  //   HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, 0);
+  //   osDelay(500);
+  // }
   /* USER CODE END StartDefaultTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-     
+
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

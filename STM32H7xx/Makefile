@@ -29,15 +29,15 @@ all: $(SUB_DIR)
 	@echo Leave $(CURR_DIR)
 
 %.o: %.c
-	@echo Compile C File $< ...
+	@echo 编译 C 文件 $< ...
 	@$(CC) $(CFLAGS_FREERTOS_$(MCU)) $< -o $@
-	@echo Compile Complete
+	@echo 编译完成
 
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo Deleting... $<
-	@echo Deleting Completed
+	@echo 正在删除... $<
+	@echo 删除完毕
 	@echo Leave $(CURR_DIR)
 
 .PHONY: info

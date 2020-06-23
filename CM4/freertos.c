@@ -27,6 +27,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "stm32h7xx_hal_gpio.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,7 +54,7 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityRealtime,
   .stack_size = 128 * 4
 };
 
@@ -111,10 +113,27 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+  /* 定义一个GPIO_InitTypeDef类型的结构体 */
+  // GPIO_InitTypeDef GPIO_InitStructure;
+
+  /* 打开GPIOB和GPIOE的外设时钟 */
+  // __HAL_RCC_GPIOK_CLK_ENABLE();
+  //
+  // GPIO_InitStructure.Pin = GPIO_PIN_6;
+  // GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+  // GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  // HAL_GPIO_Init( GPIOK, &GPIO_InitStructure );
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    // HAL_GPIO_WritePin(GPIOK, GPIO_PIN_5, 0);
+    // HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, 0);
+    // HAL_GPIO_WritePin(GPIOK, GPIO_PIN_7, 0);
+    osDelay(100);
+    // HAL_GPIO_WritePin(GPIOK, GPIO_PIN_5, 1);
+    // HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, 1);
+    // HAL_GPIO_WritePin(GPIOK, GPIO_PIN_7, 1);
   }
   /* USER CODE END StartDefaultTask */
 }

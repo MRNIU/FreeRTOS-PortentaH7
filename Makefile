@@ -3,7 +3,7 @@
 #
 # Makefile for MRNIU/FreeRTOS-PortentaH7.
 
-# Setup make env
+# 设置 make 环境
 CURR_DIR := $(shell pwd)
 ROOT_DIR := $(CURR_DIR)
 
@@ -30,29 +30,44 @@ remake:
 	$(MAKE) clean
 	@$(MAKE) all
 
+.PHONY: upload
+upload:
+	@echo uploading...
+	$(DFU) $(DFU_FLAG)
+	@echo Done.
+
+# 删除源码外的所有文件
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo Deleting... $<
+	@echo 正在删除... $<
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.d"  | xargs rm -f
-	@find . -name "*.elf"  | xargs rm -f
-	@find . -name "*.bin"  | xargs rm -f
-	@find . -name "*.map"  | xargs rm -f
-	@rm -f *.map
-	@rm -f *.nm
-	@rm -f *.bin
 	@for subdir in $(SUB_DIR); \
 		do $(MAKE) -C $$subdir clean || exit 1; \
 	done
-	@echo Deleting Completed
+	@echo 删除完毕
 	@echo Leave $(CURR_DIR)
 
 OBJ := $(shell find . -name "*.o")
 
-.PHONY: ino.elf
+.PHONY: test.elf
 ino.elf: $(OBJ)
-	$(CXX) $(LDFLAGS_ALL_$(MCU)) $^ -o $@
+    # @echo 正在生成内核... $<
+	$(CXX) $(LDFLAGS_ALL_$(MCU)) $^ -o $(INO_DIR)/$@
+	$(OBJCPY) -O binary $(INO_DIR)/$@ $(INO_DIR)/$@.bin
+
+.PHONY: code_line_count
+code_line_count:
+	find . -type f -name "*.[c|cpp|s|S|h|hpp]" -exec cat {} \; | wc -l
+
+.PHONY: generate_map
+generate_map:
+	$(READELF) -s $(IMAGE_KERNEL) >> $(RES_KERNEL_MAP)
+
+.PHONY: generate_nm
+generate_nm:
+	$(NM) $(IMAGE_KERNEL) >> $(RES_KERNEL_NM)
 
 .PHONY: info
 info:
@@ -66,8 +81,7 @@ info:
 	@echo CXXFLAGS_@MCU: $(CXXFLAGS_$(MCU))
 	@echo CXXFLAGS_ARDUINOCORE_@MCU: $(CXXFLAGS_ARDUINOCORE_$(MCU))
 	@echo CXXFLAGS_INO_@MCU: $(CXXFLAGS_INO_$(MCU))
-	@echo LD: $(LD)
-	@echo LDFLAGS_@MCU: $(LDFLAGS_$(MCU))
+	@echo LDFLAGS_ALL_@MCU: $(LDFLAGS_ALL_$(MCU))
 	@echo LINKERSCRIPT_@MCU: $(LINKERSCRIPT_$(MCU))
 	@echo AS: $(AS)
 	@echo ASFLAGS: $(ASFLAGS)

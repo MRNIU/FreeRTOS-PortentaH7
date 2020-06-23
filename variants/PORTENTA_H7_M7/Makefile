@@ -31,8 +31,8 @@ all: $(SUB_DIR)
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo Deleting... $<
-	@echo Deleting Completed
+	@echo 正在删除... $<
+	@echo 删除完毕
 	@echo Leave $(CURR_DIR)
 
 .PHONY: info

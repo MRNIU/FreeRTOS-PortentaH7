@@ -26,19 +26,22 @@ all: $(SUB_DIR)
     	do $(MAKE) -C $$subdir all || exit 1; \
     done
 	@# $(MAKE) info
-	@$(MAKE) $(patsubst %.ino, %.o, $(wildcard *.ino))
-	@echo Leave $(CURR_DIR)
+	$(MAKE) $(patsubst %.ino, %.o, $(wildcard *.ino))
+	echo Leave $(CURR_DIR)
 
 %.o: %.ino
-	@echo Compiling C++ Files $< ...
-	@$(CXX) $(CXXFLAGS_INO_$(MCU)) $< -o $@
-	@echo Compile Complete
+	echo 编译 C++ 文件 $< ...
+	$(CXX) $(CXXFLAGS_INO_$(MCU)) $< -o $@
+	echo 编译完成
 
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo Deleting... $<
-	@echo Deleting Completed
+	@echo 正在删除... $<
+	@rm -f *.map
+	@rm -f *.bin
+	@rm -f *.elf
+	@echo 删除完毕
 	@echo Leave $(CURR_DIR)
 
 .PHONY: info
