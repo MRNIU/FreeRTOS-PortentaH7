@@ -31,23 +31,23 @@ all: $(SUB_DIR)
 	@echo Leave $(CURR_DIR)
 
 %.o: %.c
-	@echo 编译 C 文件 $< ...
+	@echo Compiling C file $< ...
 	@$(CC) $(CFLAGS_FREERTOS_$(MCU)) $< -o $@
-	@echo 编译完成
+	@echo Compiling Done
 
 %.o: %.s
-	@echo 编译 .s 文件 $< ...
+	@echo Compiling .s file $< ...
 	@$(CC) $(CFLAGS_FREERTOS_$(MCU)) $< -o $@
-	@echo 编译完成
+	@echo Compiling Done
 
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo 正在删除... $<
+	@echo Deleting... $<
 	@for subdir in $(SUB_DIR); \
 		do $(MAKE) -C $$subdir clean || exit 1; \
 	done
-	@echo 删除完毕
+	@echo Deleting Completed
 	@echo Leave $(CURR_DIR)
 
 .PHONY: info

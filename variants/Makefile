@@ -27,11 +27,11 @@ all: $(MCU_$(MCU))
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo 正在删除... $<
+	@echo Deleting... $<
 	@for subdir in $(SUB_DIR); \
 		do $(MAKE) -C $$subdir clean || exit 1; \
 	done
-	@echo 删除完毕
+	@echo Deleting Completed
 	@echo Leave $(CURR_DIR)
 
 .PHONY: info

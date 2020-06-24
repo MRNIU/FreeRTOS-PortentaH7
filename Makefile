@@ -40,13 +40,13 @@ upload:
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo 正在删除... $<
+	@echo Deleting... $<
 	@find . -name "*.o"  | xargs rm -f
 	@find . -name "*.d"  | xargs rm -f
 	@for subdir in $(SUB_DIR); \
 		do $(MAKE) -C $$subdir clean || exit 1; \
 	done
-	@echo 删除完毕
+	@echo Deleting Completed
 	@echo Leave $(CURR_DIR)
 
 OBJ := $(shell find . -name "*.o")

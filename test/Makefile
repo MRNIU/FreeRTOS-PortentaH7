@@ -32,16 +32,16 @@ all: $(SUB_DIR)
 %.o: %.ino
 	echo 编译 C++ 文件 $< ...
 	$(CXX) $(CXXFLAGS_INO_$(MCU)) $< -o $@
-	echo 编译完成
+	echo Compiling Done
 
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
-	@echo 正在删除... $<
+	@echo Deleting... $<
 	@rm -f *.map
 	@rm -f *.bin
 	@rm -f *.elf
-	@echo 删除完毕
+	@echo Deleting Completed
 	@echo Leave $(CURR_DIR)
 
 .PHONY: info
