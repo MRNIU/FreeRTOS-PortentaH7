@@ -149,20 +149,18 @@ Error_Handler();
   MX_USB_OTG_HS_HCD_Init();
   /* USER CODE BEGIN 2 */
   GPIO_InitTypeDef GPIO_InitStructure;
-
   __HAL_RCC_GPIOK_CLK_ENABLE();
-
   GPIO_InitStructure.Pin = GPIO_PIN_6;
   GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init( GPIOK, &GPIO_InitStructure );
   /* Infinite loop */
   while (1)
   {
-    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, 1);
-    osDelay(500);
-    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, 0);
-    osDelay(500);
+    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, GPIO_PIN_SET);
+    HAL_Delay(500);
+    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_6, GPIO_PIN_RESET);
+    HAL_Delay(500);
   }
   /* USER CODE END 2 */
 
@@ -284,15 +282,15 @@ void Error_Handler(void)
 
   GPIO_InitStructure.Pin = GPIO_PIN_5;
   GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init( GPIOK, &GPIO_InitStructure );
   /* Infinite loop */
   for(;;)
   {
-    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_5, 1);
-    osDelay(500);
-    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_5, 0);
-    osDelay(500);
+    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_5, GPIO_PIN_SET);
+    HAL_Delay(500);
+    HAL_GPIO_WritePin(GPIOK, GPIO_PIN_5, GPIO_PIN_RESET);
+    HAL_Delay(500);
   }
   /* USER CODE END Error_Handler_Debug */
 }
