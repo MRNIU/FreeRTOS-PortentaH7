@@ -27,7 +27,7 @@ all: $(SUB_DIR)
     done
 	@# $(MAKE) info
 	@$(MAKE) $(patsubst %.c, %.o, $(wildcard *.c))
-	@$(MAKE) $(patsubst %.s, %.o, $(wildcard *.s))
+	# @$(MAKE) $(patsubst %.s, %.o, $(wildcard *.s))
 	@echo Leave $(CURR_DIR)
 
 %.o: %.c

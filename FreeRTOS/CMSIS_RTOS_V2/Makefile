@@ -30,9 +30,9 @@ all: $(SUB_DIR)
 	@echo Leave $(CURR_DIR)
 
 %.o: %.c
-	@echo Compile C File $< ...
+	@echo Compiling C file $< ...
 	@$(CC) $(CFLAGS_FREERTOS_$(MCU)) $< -o $@
-	@echo Compile Complete
+	@echo Compiling Done
 
 .PHONY: clean
 clean:

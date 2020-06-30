@@ -24,6 +24,11 @@
 #include "i2s.h"
 #include "gpio.h"
 #include "fmc.h"
+#include "stm32h7xx_ll_pwr.h"
+#include "stm32h7xx_ll_rcc.h"
+#include "stm32h7xx_ll_hsem.h"
+#include "stm32h7xx_ll_cortex.h"
+#include "Legacy/stm32_hal_legacy.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -33,26 +38,11 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
-/* USER CODE END PTD */
+/* HW semaphore Complement ID list defined in hw_conf.h from STM32WB */
+/* Index of the semaphore used to manage the entry Stop Mode procedure */
+#define CFG_HW_STOP_MODE_SEMID                                  4
+#define CFG_HW_STOP_MODE_MASK_SEMID                            (1 << CFG_HW_STOP_MODE_SEMID)
 
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-#define HSEM_ID_0 (0U) /* HW semaphore 0*/
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -69,61 +59,55 @@ void MX_FREERTOS_Init(void);
   */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
+    __HAL_RCC_HSEM_CLK_ENABLE();
+    __HAL_RCC_FLASH_C2_ALLOCATE();
 
-  /* USER CODE END 1 */
+    /* Check wether CM4 boot in parallel with CM7. If CM4 was gated but CM7 trigger the CM4 boot. No need to wait for synchronization.
+     otherwise wait for CM7, which is in charge of sytem clock configuration */
+    if (!LL_RCC_IsCM4BootForced()) {
+        /* CM4 boots at the same time than CM7. It is necessary to synchronize with CM7, by mean of HSEM, that CM7 finishes its initialization.  */
 
-/* USER CODE BEGIN Boot_Mode_Sequence_1 */
-  /*HW semaphore Clock enable*/
-  __HAL_RCC_HSEM_CLK_ENABLE();
-  /* Activate HSEM notification for Cortex-M4*/
-  HAL_HSEM_ActivateNotification(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
-  /*
-  Domain D2 goes to STOP mode (Cortex-M4 in deep-sleep) waiting for Cortex-M7 to
-  perform system initialization (system clock config, external memory configuration.. )
-  */
-  HAL_PWREx_ClearPendingEvent();
-  HAL_PWREx_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFE, PWR_D2_DOMAIN);
-  /* Clear HSEM flag */
-  __HAL_HSEM_CLEAR_FLAG(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
+        /* Activate HSEM notification for Cortex-M4*/
+        LL_HSEM_EnableIT_C2IER(HSEM, CFG_HW_STOP_MODE_MASK_SEMID);
 
-/* USER CODE END Boot_Mode_Sequence_1 */
-  /* MCU Configuration--------------------------------------------------------*/
+        /*
+        * Domain D2 goes to STOP mode (Cortex-M4 in deep-sleep) waiting for
+        * Cortex-M7 to perform system initialization (system clock config,
+        * external memory configuration.. )
+        */
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+        /* Select the domain Power Down DeepSleep */
+        LL_PWR_SetRegulModeDS(LL_PWR_REGU_DSMODE_MAIN);
+        /* Keep DSTOP mode when D2 domain enters Deepsleep */
+        LL_PWR_CPU_SetD2PowerMode(LL_PWR_CPU_MODE_D2STOP);
+        LL_PWR_CPU2_SetD2PowerMode(LL_PWR_CPU2_MODE_D2STOP);
+        /* Set SLEEPDEEP bit of Cortex System Control Register */
+        LL_LPM_EnableDeepSleep();
 
-  /* USER CODE BEGIN Init */
+        /* Ensure that all instructions done before entering STOP mode */
+        __DSB();
+        __ISB();
+        /* Request Wait For Event */
+        __WFE();
 
-  /* USER CODE END Init */
+        /* Reset SLEEPDEEP bit of Cortex System Control Register,
+        * the following LL API Clear SLEEPDEEP bit of Cortex
+        * System Control Register
+        */
+        LL_LPM_EnableSleep();
 
-  /* USER CODE BEGIN SysInit */
+        /* Clear HSEM flag */
+        LL_HSEM_DisableIT_C2IER(HSEM, CFG_HW_STOP_MODE_MASK_SEMID);
+        LL_HSEM_ClearFlag_C2ICR(HSEM, CFG_HW_STOP_MODE_MASK_SEMID);
+    }
+      // Update the SystemCoreClock variable.
+      SystemCoreClockUpdate();
+      HAL_Init();
 
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_I2S2_Init();
-  /* USER CODE BEGIN 2 */
-
-  /* USER CODE END 2 */
-
-  /* Init scheduler */
-  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
-  MX_FREERTOS_Init();
-  /* Start scheduler */
-  osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
   }
-  /* USER CODE END 3 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -138,7 +122,9 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+  while(1){
 
+  }
   /* USER CODE END Error_Handler_Debug */
 }
 
