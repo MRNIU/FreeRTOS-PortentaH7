@@ -16,13 +16,13 @@ default:
 .PHONY: all
 all: $(SUB_DIR)
 	@if [ $(MCU) = "" ]; then\
-        echo "Hello world";\
+        echo "Please specify M4 or M7";\
     fi
 	@echo Entry $(CURR_DIR)
 	@for subdir in $(SUB_DIR); \
     	do $(MAKE) -C $$subdir all || exit 1; \
     done
-	$(MAKE) ino.elf
+	$(MAKE) test.elf
 	@echo Leave $(CURR_DIR)
 
 .PHONY: remake
@@ -52,8 +52,7 @@ clean:
 OBJ := $(shell find . -name "*.o")
 
 .PHONY: test.elf
-ino.elf: $(OBJ)
-    # @echo 正在生成内核... $<
+test.elf: $(OBJ)
 	$(CXX) $(LDFLAGS_ALL_$(MCU)) $^ -o $(INO_DIR)/$@
 	$(OBJCPY) -O binary $(INO_DIR)/$@ $(INO_DIR)/$@.bin
 
