@@ -68,6 +68,17 @@ int main(void)
     /* wait until CPU2 wakes up from stop mode */
     while (LL_RCC_D2CK_IsReady() == 0);
 
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+
+    if (__HAL_RCC_GET_RTC_SOURCE() != RCC_RTCCLKSOURCE_NO_CLK) {
+        RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI;
+        RCC_OscInitStruct.PLL.PLLState   = RCC_PLL_NONE;
+        RCC_OscInitStruct.LSIState       = RCC_LSI_ON;
+        if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+            Error_Handler();
+        }
+    }
+
     // osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
     // MX_FREERTOS_Init();
     /* Start scheduler */

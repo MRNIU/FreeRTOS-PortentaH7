@@ -101,13 +101,22 @@ int main(void)
         LL_HSEM_ClearFlag_C2ICR(HSEM, CFG_HW_STOP_MODE_MASK_SEMID);
     }
       // Update the SystemCoreClock variable.
-      SystemCoreClockUpdate();
-      HAL_Init();
+    SystemCoreClockUpdate();
+    HAL_Init();
 
-  while (1)
-  {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 
-  }
+    if (__HAL_RCC_GET_RTC_SOURCE() != RCC_RTCCLKSOURCE_NO_CLK) {
+        RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI;
+        RCC_OscInitStruct.PLL.PLLState   = RCC_PLL_NONE;
+        RCC_OscInitStruct.LSIState       = RCC_LSI_ON;
+        if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+            Error_Handler();
+        }
+    }
+
+    while (1) {
+    }
 }
 
 /* USER CODE BEGIN 4 */
