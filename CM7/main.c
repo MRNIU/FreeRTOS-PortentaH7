@@ -53,8 +53,6 @@ int main(void)
     SystemClock_Config();
     SystemCoreClockUpdate();
 
-    HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
-
     /* Check wether CM4 boot in parallel with CM7. If CM4 was gated but CM7 trigger the CM4 boot. No need to wait for synchronization.
        otherwise CM7 should wakeup CM4 when system clocks initialization is done.  */
     if (READ_BIT(SYSCFG->UR1, SYSCFG_UR1_BCM4)) {
@@ -64,10 +62,11 @@ int main(void)
     } else {
         LL_RCC_ForceCM4Boot();
     }
+
+    HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
+
     /* wait until CPU2 wakes up from stop mode */
     while (LL_RCC_D2CK_IsReady() == 0);
-
-
 
     // osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
     // MX_FREERTOS_Init();
