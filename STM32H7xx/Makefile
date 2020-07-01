@@ -7,7 +7,7 @@ CURR_DIR := $(shell pwd)
 ROOT_DIR := $(CURR_DIR)/..
 include $(ROOT_DIR)/Makefile.env
 
-exclude_dirs := include Legacy
+exclude_dirs := include
 subdirs := $(shell find . -maxdepth 1 -type d)
 subdirs := $(basename $(patsubst ./%, %, $(subdirs)))
 subdirs := $(filter-out $(exclude_dirs), $(subdirs))
@@ -26,8 +26,8 @@ all: $(SUB_DIR)
     	do $(MAKE) -C $$subdir all || exit 1; \
     done
 	@# $(MAKE) info
-	@#$(MAKE) $(patsubst %.c, %.o, $(wildcard *.c))
-	@#$(MAKE) $(patsubst %.s, %.o, $(wildcard *.s))
+	@$(MAKE) $(patsubst %.c, %.o, $(wildcard *.c))
+	@$(MAKE) $(patsubst %.s, %.o, $(wildcard *.s))
 	@echo Leave $(CURR_DIR)
 
 %.o: %.c

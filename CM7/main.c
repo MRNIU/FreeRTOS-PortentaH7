@@ -39,6 +39,7 @@
 #define CFG_HW_STOP_MODE_SEMID                                  4
 #define CFG_HW_STOP_MODE_MASK_SEMID                            (1 << CFG_HW_STOP_MODE_SEMID)
 
+void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 
 int main(void)

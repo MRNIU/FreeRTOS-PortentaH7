@@ -30,7 +30,7 @@ all: $(SUB_DIR)
 	echo Leave $(CURR_DIR)
 
 %.o: %.ino
-	echo 编译 C++ 文件 $< ...
+	echo Compiling C++ files $< ...
 	$(CXX) $(CXXFLAGS_INO_$(MCU)) $< -o $@
 	echo Compiling Done
 

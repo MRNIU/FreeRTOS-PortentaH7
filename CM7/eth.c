@@ -19,6 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "eth.h"
+#include "string.h"
 
 #if defined ( __ICCARM__ ) /*!< IAR Compiler */
 
@@ -35,7 +36,7 @@ __attribute__((at(0x30040000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT
 __attribute__((at(0x30040060))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
 __attribute__((at(0x30040200))) uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_MAX_PACKET_SIZE]; /* Ethernet Receive Buffer */
 
-#elif defined ( __GNUC__ ) /* GNU Compiler */ 
+#elif defined ( __GNUC__ ) /* GNU Compiler */
 
 ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section(".RxDecripSection"))); /* Ethernet Rx DMA Descriptors */
 ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDecripSection")));   /* Ethernet Tx DMA Descriptors */
@@ -43,7 +44,7 @@ uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_MAX_PACKET_SIZE] __attribute__((section(".R
 
 #endif
 
-ETH_TxPacketConfig TxConfig; 
+ETH_TxPacketConfig TxConfig;
 
 /* USER CODE BEGIN 0 */
 
@@ -70,7 +71,7 @@ void MX_ETH_Init(void)
   heth.Init.RxBuffLen = 1524;
 
   /* USER CODE BEGIN MACADDRESS */
-    
+
   /* USER CODE END MACADDRESS */
 
   if (HAL_ETH_Init(&heth) != HAL_OK)
@@ -98,11 +99,11 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     __HAL_RCC_ETH1MAC_CLK_ENABLE();
     __HAL_RCC_ETH1TX_CLK_ENABLE();
     __HAL_RCC_ETH1RX_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOG_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**ETH GPIO Configuration    
+    /**ETH GPIO Configuration
     PG11     ------> ETH_TX_EN
     PG12     ------> ETH_TXD1
     PG13     ------> ETH_TXD0
@@ -111,7 +112,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     PA1     ------> ETH_REF_CLK
     PA7     ------> ETH_CRS_DV
     PC4     ------> ETH_RXD0
-    PC5     ------> ETH_RXD1 
+    PC5     ------> ETH_RXD1
     */
     GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -152,8 +153,8 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
     __HAL_RCC_ETH1MAC_CLK_DISABLE();
     __HAL_RCC_ETH1TX_CLK_DISABLE();
     __HAL_RCC_ETH1RX_CLK_DISABLE();
-  
-    /**ETH GPIO Configuration    
+
+    /**ETH GPIO Configuration
     PG11     ------> ETH_TX_EN
     PG12     ------> ETH_TXD1
     PG13     ------> ETH_TXD0
@@ -162,7 +163,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
     PA1     ------> ETH_REF_CLK
     PA7     ------> ETH_CRS_DV
     PC4     ------> ETH_RXD0
-    PC5     ------> ETH_RXD1 
+    PC5     ------> ETH_RXD1
     */
     HAL_GPIO_DeInit(GPIOG, GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13);
 
@@ -174,7 +175,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
 
   /* USER CODE END ETH_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 

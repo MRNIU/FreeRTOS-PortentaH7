@@ -3,7 +3,6 @@
 #
 # Makefile for MRNIU/FreeRTOS-PortentaH7.
 
-# 设置 make 环境
 CURR_DIR := $(shell pwd)
 ROOT_DIR := $(CURR_DIR)
 
@@ -36,7 +35,6 @@ upload:
 	$(DFU) $(DFU_FLAG)
 	@echo Done.
 
-# 删除源码外的所有文件
 .PHONY: clean
 clean:
 	@echo Entry $(CURR_DIR)
