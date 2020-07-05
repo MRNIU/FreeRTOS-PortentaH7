@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// gpio.c for MRNIU/FreeRTOS-PortentaH7.
+
 /**
   ******************************************************************************
   * File Name          : gpio.c
@@ -30,9 +35,9 @@
 
 /* USER CODE END 1 */
 
-/** Configure pins as 
-        * Analog 
-        * Input 
+/** Configure pins as
+        * Analog
+        * Input
         * Output
         * EVENT_OUT
         * EXTI

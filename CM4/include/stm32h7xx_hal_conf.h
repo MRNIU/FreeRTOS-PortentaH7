@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// stm32h7xx_hal_conf.h for MRNIU/FreeRTOS-PortentaH7.
+
 /**
   ******************************************************************************
   * @file    stm32h7xx_hal_conf.h

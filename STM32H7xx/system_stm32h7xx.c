@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// system_stm32h7xx.c for MRNIU/FreeRTOS-PortentaH7.
+
 /**
   ******************************************************************************
   * @file    system_stm32h7xx.c
@@ -373,14 +378,14 @@ void SystemCoreClockUpdate (void)
   common_system_clock >>= tmp;
 
   /* SystemD2Clock frequency : AXI and AHBs Clock frequency  */
-  SystemD2Clock = (common_system_clock >> ((D1CorePrescTable[(RCC->CDCFGR1 & RCC_CDCFGR1_HPRE)>> RCC_CDCFGR1_HPRE_Pos]) & 0x1FU));
+    SystemD2Clock = (common_system_clock >> ((D1CorePrescTable[(RCC->CDCFGR1 & RCC_CDCFGR1_HPRE)>> RCC_CDCFGR1_HPRE_Pos]) & 0x1FU));
 
 #endif
 
 #if defined(DUAL_CORE) && defined(CORE_CM4)
-  SystemCoreClock = SystemD2Clock;
+    SystemCoreClock = SystemD2Clock;
 #else
-  SystemCoreClock = common_system_clock;
+    SystemCoreClock = common_system_clock;
 #endif /* DUAL_CORE && CORE_CM4 */
 }
 

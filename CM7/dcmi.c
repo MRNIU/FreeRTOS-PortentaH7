@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// dcmi.c for MRNIU/FreeRTOS-PortentaH7.
+
 /**
   ******************************************************************************
   * File Name          : DCMI.c
@@ -60,11 +65,11 @@ void HAL_DCMI_MspInit(DCMI_HandleTypeDef* dcmiHandle)
   /* USER CODE END DCMI_MspInit 0 */
     /* DCMI clock enable */
     __HAL_RCC_DCMI_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOI_CLK_ENABLE();
     __HAL_RCC_GPIOH_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**DCMI GPIO Configuration    
+    /**DCMI GPIO Configuration
     PI6     ------> DCMI_D6
     PI5     ------> DCMI_VSYNC
     PI4     ------> DCMI_D5
@@ -75,7 +80,7 @@ void HAL_DCMI_MspInit(DCMI_HandleTypeDef* dcmiHandle)
     PA6     ------> DCMI_PIXCLK
     PH9     ------> DCMI_D0
     PH12     ------> DCMI_D3
-    PA4     ------> DCMI_HSYNC 
+    PA4     ------> DCMI_HSYNC
     */
     GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_5|GPIO_PIN_4|GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -84,7 +89,7 @@ void HAL_DCMI_MspInit(DCMI_HandleTypeDef* dcmiHandle)
     GPIO_InitStruct.Alternate = GPIO_AF13_DCMI;
     HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_9 
+    GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_9
                           |GPIO_PIN_12;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -115,8 +120,8 @@ void HAL_DCMI_MspDeInit(DCMI_HandleTypeDef* dcmiHandle)
   /* USER CODE END DCMI_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_DCMI_CLK_DISABLE();
-  
-    /**DCMI GPIO Configuration    
+
+    /**DCMI GPIO Configuration
     PI6     ------> DCMI_D6
     PI5     ------> DCMI_VSYNC
     PI4     ------> DCMI_D5
@@ -127,11 +132,11 @@ void HAL_DCMI_MspDeInit(DCMI_HandleTypeDef* dcmiHandle)
     PA6     ------> DCMI_PIXCLK
     PH9     ------> DCMI_D0
     PH12     ------> DCMI_D3
-    PA4     ------> DCMI_HSYNC 
+    PA4     ------> DCMI_HSYNC
     */
     HAL_GPIO_DeInit(GPIOI, GPIO_PIN_6|GPIO_PIN_5|GPIO_PIN_4|GPIO_PIN_7);
 
-    HAL_GPIO_DeInit(GPIOH, GPIO_PIN_14|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_9 
+    HAL_GPIO_DeInit(GPIOH, GPIO_PIN_14|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_9
                           |GPIO_PIN_12);
 
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_6|GPIO_PIN_4);
@@ -140,7 +145,7 @@ void HAL_DCMI_MspDeInit(DCMI_HandleTypeDef* dcmiHandle)
 
   /* USER CODE END DCMI_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 

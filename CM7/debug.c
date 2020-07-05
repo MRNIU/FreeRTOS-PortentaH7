@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// debug.c for MRNIU/FreeRTOS-PortentaH7.
+
 /**
   ******************************************************************************
   * File Name          : DEBUG.c

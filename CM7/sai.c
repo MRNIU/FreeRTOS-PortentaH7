@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// sai.c for MRNIU/FreeRTOS-PortentaH7.
+
 /**
   ******************************************************************************
   * File Name          : SAI.c
@@ -116,11 +121,11 @@ void HAL_SAI_MspInit(SAI_HandleTypeDef* hsai)
        __HAL_RCC_SAI1_CLK_ENABLE();
     }
     SAI1_client ++;
-    
-    /**SAI1_A_Block_A GPIO Configuration    
+
+    /**SAI1_A_Block_A GPIO Configuration
     PE5     ------> SAI1_SCK_A
     PE4     ------> SAI1_FS_A
-    PE6     ------> SAI1_SD_A 
+    PE6     ------> SAI1_SD_A
     */
     GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_4|GPIO_PIN_6;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -139,10 +144,10 @@ void HAL_SAI_MspInit(SAI_HandleTypeDef* hsai)
        __HAL_RCC_SAI4_CLK_ENABLE();
     }
     SAI4_client ++;
-    
-    /**SAI4_A_Block_A GPIO Configuration    
+
+    /**SAI4_A_Block_A GPIO Configuration
     PE2     ------> SAI4_CK1
-    PB2     ------> SAI4_D1 
+    PB2     ------> SAI4_D1
     */
     GPIO_InitStruct.Pin = GPIO_PIN_2;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -170,14 +175,14 @@ void HAL_SAI_MspDeInit(SAI_HandleTypeDef* hsai)
     SAI1_client --;
     if (SAI1_client == 0)
       {
-      /* Peripheral clock disable */ 
+      /* Peripheral clock disable */
        __HAL_RCC_SAI1_CLK_DISABLE();
       }
-    
-    /**SAI1_A_Block_A GPIO Configuration    
+
+    /**SAI1_A_Block_A GPIO Configuration
     PE5     ------> SAI1_SCK_A
     PE4     ------> SAI1_FS_A
-    PE6     ------> SAI1_SD_A 
+    PE6     ------> SAI1_SD_A
     */
     HAL_GPIO_DeInit(GPIOE, GPIO_PIN_5|GPIO_PIN_4|GPIO_PIN_6);
 
@@ -188,13 +193,13 @@ void HAL_SAI_MspDeInit(SAI_HandleTypeDef* hsai)
     SAI4_client --;
     if (SAI4_client == 0)
       {
-      /* Peripheral clock disable */ 
+      /* Peripheral clock disable */
        __HAL_RCC_SAI4_CLK_DISABLE();
       }
-    
-    /**SAI4_A_Block_A GPIO Configuration    
+
+    /**SAI4_A_Block_A GPIO Configuration
     PE2     ------> SAI4_CK1
-    PB2     ------> SAI4_D1 
+    PB2     ------> SAI4_D1
     */
     HAL_GPIO_DeInit(GPIOE, GPIO_PIN_2);
 

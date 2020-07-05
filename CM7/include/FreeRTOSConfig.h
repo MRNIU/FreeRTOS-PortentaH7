@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// FreeRTOSConfig.h for MRNIU/FreeRTOS-PortentaH7.
+
 /* USER CODE BEGIN Header */
 /*
  * FreeRTOS Kernel V10.2.1

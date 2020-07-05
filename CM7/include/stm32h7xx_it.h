@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// stm32h7xx_it.h for MRNIU/FreeRTOS-PortentaH7.
+
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -24,7 +29,7 @@
 
 #ifdef __cplusplus
  extern "C" {
-#endif 
+#endif
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */

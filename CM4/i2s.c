@@ -1,3 +1,8 @@
+
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// i2s.c for MRNIU/FreeRTOS-PortentaH7.
+
 /**
   ******************************************************************************
   * File Name          : I2S.c
@@ -59,15 +64,15 @@ void HAL_I2S_MspInit(I2S_HandleTypeDef* i2sHandle)
   /* USER CODE END SPI2_MspInit 0 */
     /* I2S2 clock enable */
     __HAL_RCC_SPI2_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOD_CLK_ENABLE();
     __HAL_RCC_GPIOI_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**I2S2 GPIO Configuration    
+    /**I2S2 GPIO Configuration
     PD3     ------> I2S2_CK
     PI2     ------> I2S2_SDI
     PI3     ------> I2S2_SDO
-    PB9     ------> I2S2_WS 
+    PB9     ------> I2S2_WS
     */
     GPIO_InitStruct.Pin = GPIO_PIN_3;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -106,12 +111,12 @@ void HAL_I2S_MspDeInit(I2S_HandleTypeDef* i2sHandle)
   /* USER CODE END SPI2_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_SPI2_CLK_DISABLE();
-  
-    /**I2S2 GPIO Configuration    
+
+    /**I2S2 GPIO Configuration
     PD3     ------> I2S2_CK
     PI2     ------> I2S2_SDI
     PI3     ------> I2S2_SDO
-    PB9     ------> I2S2_WS 
+    PB9     ------> I2S2_WS
     */
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_3);
 
@@ -123,7 +128,7 @@ void HAL_I2S_MspDeInit(I2S_HandleTypeDef* i2sHandle)
 
   /* USER CODE END SPI2_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 

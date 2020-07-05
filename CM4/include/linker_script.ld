@@ -1,3 +1,10 @@
+
+/*
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// linker_script.ld for MRNIU/FreeRTOS-PortentaH7.
+*/
+
 /*
 ******************************************************************************
 **

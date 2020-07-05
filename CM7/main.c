@@ -1,40 +1,22 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
 
-/* Includes ------------------------------------------------------------------*/
+// This file is a part of MRNIU/FreeRTOS-PortentaH7 (https://github.com/MRNIU/FreeRTOS-PortentaH7).
+//
+// main.c for MRNIU/FreeRTOS-PortentaH7.
+
 #include "main.h"
-// #include "cmsis_os.h"
-// #include "dcmi.h"
-// #include "eth.h"
-// #include "fdcan.h"
-// #include "i2c.h"
-// #include "usart.h"
-// #include "quadspi.h"
-// #include "sai.h"
-// #include "sdmmc.h"
-// #include "spi.h"
-// #include "usb_otg.h"
-// #include "gpio.h"
-// #include "fmc.h"
-#include "stm32h7xx_ll_rcc.h"
-#include "stm32h7xx_ll_hsem.h"
+#include "cmsis_os.h"
+#include "dcmi.h"
+#include "eth.h"
+#include "fdcan.h"
+#include "i2c.h"
+#include "usart.h"
+#include "quadspi.h"
+#include "sai.h"
+#include "sdmmc.h"
+#include "spi.h"
+#include "usb_otg.h"
+#include "gpio.h"
+#include "fmc.h"
 
 #define CFG_HW_STOP_MODE_SEMID                                  4
 #define CFG_HW_STOP_MODE_MASK_SEMID                            (1 << CFG_HW_STOP_MODE_SEMID)
@@ -46,6 +28,12 @@ int main(void)
 {
     __HAL_RCC_HSEM_CLK_ENABLE();
     SystemCoreClockUpdate();
+
+    /* Enable I-Cache */
+	SCB_EnableICache();
+	/* Enable D-Cache */
+	SCB_EnableDCache();
+
     HAL_Init();
 
     /* Configure the System clock source, PLL Multiplier and Divider factors,
@@ -53,45 +41,50 @@ int main(void)
     SystemClock_Config();
     SystemCoreClockUpdate();
 
-    /* Check wether CM4 boot in parallel with CM7. If CM4 was gated but CM7 trigger the CM4 boot. No need to wait for synchronization.
-       otherwise CM7 should wakeup CM4 when system clocks initialization is done.  */
-    if (READ_BIT(SYSCFG->UR1, SYSCFG_UR1_BCM4)) {
-        LL_HSEM_1StepLock(HSEM, CFG_HW_STOP_MODE_SEMID);
-        /*Release HSEM in order to notify the CPU2(CM4)*/
-        LL_HSEM_ReleaseLock(HSEM, CFG_HW_STOP_MODE_SEMID, 0);
-    } else {
-        LL_RCC_ForceCM4Boot();
-    }
+    MX_GPIO_Init();
+    MX_DCMI_Init();
+    MX_ETH_Init();
+    MX_FDCAN1_Init();
+    MX_FMC_Init();
+    MX_I2C1_Init();
+    MX_I2C3_Init();
+    MX_LPUART1_UART_Init();
+    MX_UART4_Init();
+    MX_UART7_Init();
+    MX_USART6_UART_Init();
+    MX_QUADSPI_Init();
+    MX_SAI1_Init();
+    MX_SAI4_Init();
+    // MX_SDMMC1_SD_Init();
+    MX_SPI2_Init();
+    // MX_USB_OTG_FS_HCD_Init();
+    // MX_USB_OTG_HS_HCD_Init();
 
+    osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
+    MX_FREERTOS_Init();
     HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
 
-    /* wait until CPU2 wakes up from stop mode */
-    while (LL_RCC_D2CK_IsReady() == 0);
-
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-
-    if (__HAL_RCC_GET_RTC_SOURCE() != RCC_RTCCLKSOURCE_NO_CLK) {
-        RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI;
-        RCC_OscInitStruct.PLL.PLLState   = RCC_PLL_NONE;
-        RCC_OscInitStruct.LSIState       = RCC_LSI_ON;
-        if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-            Error_Handler();
-        }
-    }
-
-    // osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
-    // MX_FREERTOS_Init();
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.Pin = LED_G_Pin;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
+    HAL_GPIO_Init(LED_G_GPIO_Port, &GPIO_InitStructure);
+    HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, 1);
+    /* Infinite loop */
+    // while(1) {
+        HAL_Delay(1000);
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
+        HAL_Delay(1000);
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);HAL_Delay(1000);
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);HAL_Delay(1000);
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);HAL_Delay(1000);
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
+    // }
+    // HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
     /* Start scheduler */
-    // osKernelStart();
-    while(1){
-
-    }
+    osKernelStart();
 }
 
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
 void SystemClock_Config(void)
 {
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -157,44 +150,6 @@ void SystemClock_Config(void)
     return; // OK
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
-void Error_Handler(void)
-{
-    GPIO_InitTypeDef GPIO_InitStructure;
-    __HAL_RCC_GPIOK_CLK_ENABLE();
-    GPIO_InitStructure.Pin = GPIO_PIN_7;
-    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
-    HAL_GPIO_Init( GPIOK, &GPIO_InitStructure );
-    /* Infinite loop */
-    while(1) {
-        HAL_Delay(500);
-        HAL_GPIO_TogglePin(GPIOK, GPIO_PIN_7);
-    }
+void Error_Handler(void) {
+    return;
 }
-
-#ifdef  USE_FULL_ASSERT
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t *file, uint32_t line)
-{
-  /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
-}
-#endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
