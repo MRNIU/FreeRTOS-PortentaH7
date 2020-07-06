@@ -16,15 +16,15 @@ const osThreadAttr_t cm4_task_attributes = {
   .stack_size = 128 * 4
 };
 
-void StartDefaultTask(void *argument);
+void StartM4DefaultTask(void *argument);
 
 void MX_FREERTOS_Init(void);
 
 void MX_FREERTOS_Init(void) {
-    cm4_task_handle = osThreadNew(StartDefaultTask, NULL, &cm4_task_attributes);
+    cm4_task_handle = osThreadNew(StartM4DefaultTask, NULL, &cm4_task_attributes);
 }
 
-void StartDefaultTask(void *argument) {
+void StartM4DefaultTask(void *argument) {
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.Pin = LED_B_Pin;
     GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
@@ -33,7 +33,7 @@ void StartDefaultTask(void *argument) {
     HAL_GPIO_WritePin(LED_B_GPIO_Port, LED_B_Pin, 1);
     /* Infinite loop */
     while(1) {
-        HAL_Delay(1000);
+        osDelay(1000);
         HAL_GPIO_TogglePin(LED_B_GPIO_Port, LED_B_Pin);
     }
 }

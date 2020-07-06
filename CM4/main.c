@@ -14,9 +14,6 @@
 #include "stm32h7xx_ll_cortex.h"
 #include "Legacy/stm32_hal_legacy.h"
 
-#define CFG_HW_STOP_MODE_SEMID                                  4
-#define CFG_HW_STOP_MODE_MASK_SEMID                            (1 << CFG_HW_STOP_MODE_SEMID)
-
 void MX_FREERTOS_Init(void);
 
 int main(void) {

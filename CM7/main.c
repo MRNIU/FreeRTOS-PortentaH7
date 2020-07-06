@@ -18,9 +18,6 @@
 #include "gpio.h"
 #include "fmc.h"
 
-#define CFG_HW_STOP_MODE_SEMID                                  4
-#define CFG_HW_STOP_MODE_MASK_SEMID                            (1 << CFG_HW_STOP_MODE_SEMID)
-
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 
@@ -62,23 +59,18 @@ int main(void)
 
     osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
     MX_FREERTOS_Init();
-    HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
+    // HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
 
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.Pin = LED_G_Pin;
-    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
-    HAL_GPIO_Init(LED_G_GPIO_Port, &GPIO_InitStructure);
-    HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, 1);
-    /* Infinite loop */
+    // GPIO_InitTypeDef GPIO_InitStructure;
+    // GPIO_InitStructure.Pin = LED_G_Pin;
+    // GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    // GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
+    // HAL_GPIO_Init(LED_G_GPIO_Port, &GPIO_InitStructure);
+    // HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, 1);
+    // /* Infinite loop */
     // while(1) {
-        HAL_Delay(1000);
-        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
-        HAL_Delay(1000);
-        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);HAL_Delay(1000);
-        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);HAL_Delay(1000);
-        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);HAL_Delay(1000);
-        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
+    //     vTaskDelay(100);
+    //     HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
     // }
     // HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
     /* Start scheduler */
@@ -131,7 +123,6 @@ void SystemClock_Config(void)
         Error_Handler();
     }
 
-  #if DEVICE_USBDEVICE
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USB;
     PeriphClkInitStruct.UsbClockSelection = RCC_USBCLKSOURCE_HSI48;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK) {
@@ -139,7 +130,6 @@ void SystemClock_Config(void)
     }
 
     HAL_PWREx_EnableUSBVoltageDetector();
-  #endif /* DEVICE_USBDEVICE */
 
     __HAL_RCC_CSI_ENABLE() ;
 

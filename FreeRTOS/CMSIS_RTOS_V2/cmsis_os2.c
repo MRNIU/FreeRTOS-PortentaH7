@@ -1,5 +1,5 @@
 /* --------------------------------------------------------------------------
- * Portions Copyright © 2019 STMicroelectronics International N.V. All rights reserved.
+ * Portions Copyright ï¿½ 2019 STMicroelectronics International N.V. All rights reserved.
  * Copyright (c) 2013-2019 Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -117,7 +117,7 @@ static osKernelState_t KernelState = osKernelInactive;
     HeapRegion_t array.
   */
   #define HEAP_5_REGION_SETUP   1
-  
+
   #ifndef configHEAP_5_REGIONS
     #define configHEAP_5_REGIONS xHeapRegions
 
@@ -171,7 +171,7 @@ __STATIC_INLINE void SVC_Setup (void) {
   /* and when its priority is lower or equal to BASEPRI, svc intruction */
   /* causes a Hard Fault.                                               */
 
- /* 
+ /*
   * the call below has introduced a regression compared to revious release
   * The issue was logged under:https://github.com/ARM-software/CMSIS-FreeRTOS/issues/35
   * until it is correctly fixed, the code below is commented
@@ -1469,7 +1469,7 @@ osSemaphoreId_t osSemaphoreNew (uint32_t max_count, uint32_t initial_count, cons
           hSemaphore = xSemaphoreCreateCounting (max_count, initial_count);
         }
       }
-      
+
       #if (configQUEUE_REGISTRY_SIZE > 0)
       if (hSemaphore != NULL) {
         if (attr != NULL) {
