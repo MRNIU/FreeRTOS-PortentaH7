@@ -21,8 +21,7 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 
-int main(void)
-{
+int main(void) {
     __HAL_RCC_HSEM_CLK_ENABLE();
     SystemCoreClockUpdate();
 
@@ -59,26 +58,11 @@ int main(void)
 
     osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
     MX_FREERTOS_Init();
-    // HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
-
-    // GPIO_InitTypeDef GPIO_InitStructure;
-    // GPIO_InitStructure.Pin = LED_G_Pin;
-    // GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    // GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
-    // HAL_GPIO_Init(LED_G_GPIO_Port, &GPIO_InitStructure);
-    // HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, 1);
-    // /* Infinite loop */
-    // while(1) {
-    //     vTaskDelay(100);
-    //     HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
-    // }
-    // HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
     /* Start scheduler */
     osKernelStart();
 }
 
-void SystemClock_Config(void)
-{
+void SystemClock_Config(void) {
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
@@ -141,5 +125,16 @@ void SystemClock_Config(void)
 }
 
 void Error_Handler(void) {
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.Pin = LED_G_Pin;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
+    HAL_GPIO_Init( LED_G_GPIO_Port, &GPIO_InitStructure );
+    HAL_GPIO_WritePin(LED_G_GPIO_Port, LED_G_Pin, 1);
+    /* Infinite loop */
+    while(1) {
+        osDelay(500);
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
+    }
     return;
 }
