@@ -14,8 +14,9 @@ default:
 
 .PHONY: all
 all: $(SUB_DIR)
-	@if [ $(MCU) = "" ]; then\
+	@if [ "$(MCU)" = "" ]; then\
         echo "Please specify M4 or M7";\
+        exit 1;\
     fi
 	@echo Entry $(CURR_DIR)
 	@for subdir in $(SUB_DIR); \
