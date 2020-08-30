@@ -26,8 +26,16 @@ all: $(SUB_DIR)
     	do $(MAKE) -C $$subdir all || exit 1; \
     done
 	@# $(MAKE) info
-	$(MAKE) $(patsubst %.ino, %.o, $(wildcard *.ino))
+	$(MAKE) test
 	echo Leave $(CURR_DIR)
+
+ifeq ($(MCU),M4)
+    .PHONY: test
+    test: test_m4.o
+else
+    .PHONY: test
+    test: test_m7.o
+endif
 
 %.o: %.ino
 	echo Compiling C++ files $< ...
