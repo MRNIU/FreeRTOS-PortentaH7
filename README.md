@@ -27,3 +27,9 @@ Clean build file:
 7. `make MCU=M7 upload`
 8. You can see the blue LED flashing on the board.
 
+# TODO
+
+- [ ] Refactor
+- [ ] Use cmake
+- [ ] Use https://github.com/STMicroelectronics/stm32h7xx_hal_driver
+- [ ] Use https://github.com/FreeRTOS/FreeRTOS-Kernel
